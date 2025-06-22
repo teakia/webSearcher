@@ -1,0 +1,6 @@
+gotoWeb https://www.twitch.tv
+search Just Chatting
+scroll
+gotoRandomChannel "/directory/","/videos/","/collections/","/clip/","/schedule"
+screenshot
+quit
