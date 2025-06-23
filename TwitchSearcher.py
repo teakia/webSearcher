@@ -10,8 +10,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from urllib.parse import urlparse
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
+import random
 
 
 
@@ -19,6 +20,7 @@ class TwitchSearcher:
     def __init__(self, timeout=15):
         service = Service(ChromeDriverManager().install())
         options = Options()
+        options.add_experimental_option("mobileEmulation", {"deviceName": "iPhone SE"})
         self.driver = webdriver.Chrome(service=service, options=options)
         options.add_argument("--start-maximized")
         self.wait = WebDriverWait(self.driver, timeout)
@@ -29,37 +31,27 @@ class TwitchSearcher:
         time.sleep(5)
 
     def search(self, keyword):
+        search_button = self.driver.find_element(By.XPATH, "(//div[contains(@class, 'iOKESX')])[2]")
+        search_button.click()
+        time.sleep(5)
         search_box = self.wait.until(
-            EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Search" or @placeholder="搜尋"]'))
-        )
+    EC.presence_of_element_located((By.XPATH, '//input[@type="search"]'))
+)
         search_box.send_keys(keyword)
         search_box.send_keys("\n")
         time.sleep(5)
 
     def scroll(self):
-        actions = ActionChains(self.driver)
-
-        window_size = self.driver.get_window_size()
-        center_x = window_size['width'] // 2
-        center_y = window_size['height'] // 2
-        actions.move_by_offset(center_x, center_y).perform()
-        time.sleep(0.5)
-        print('lala')
-        actions.move_by_offset(200, 0).perform()
-        time.sleep(0.5)
-        print('lala')
-        actions.move_by_offset(-200, 0).perform()
-        time.sleep(0.5)
-        print('lala')
-        actions.move_by_offset(200, 0).perform()
-        time.sleep(0.5)
-        print('lala')
+        for _ in range(2):
+            self.driver.execute_script("window.scrollBy(0, 300);")
+            time.sleep(1)
+            print("Scrolling")
 
     def gotoChannel(self, channel_name, blacklist):
         try:
             channel_link = self.wait.until(
                     EC.presence_of_all_elements_located(
-                        (By.XPATH, f'//div[@data-a-target="search-result-live-channel"//a and .//p[text()="{channel_name}"]]')
+                        (By.XPATH, f'//div[@data-a-target="search-result-card"//a and .//p[text()="{channel_name}"]]')
                         )
                     )
             print(f"Go to channel: {channel_link.get_attribute('href')}")
@@ -100,11 +92,12 @@ class TwitchSearcher:
         except:
             print("")
 
+        time.sleep(5)
 
     def gotoRandomChannel(self, blacklist):
         channels = self.wait.until(
                 EC.presence_of_all_elements_located(
-                    (By.XPATH, '//div[@data-a-target="search-result-live-channel"]//a')
+                    (By.CSS_SELECTOR, '.search-result-card__img.tw-image')
                     )
                 )
 
@@ -140,6 +133,7 @@ class TwitchSearcher:
         except:
             print("")
 
+        time.sleep(5)
 
 
     def screenshot(self):

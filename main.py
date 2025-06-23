@@ -48,10 +48,10 @@ if __name__ == "__main__":
         search = TwitchSearcher()
         link = "https://www.twitch.tv"
         keyword = "StarCraft II"
-        blacklist = ["/directory/", "/videos/", "/collections/", "/clip/", "/schedule"]
+        blacklist = ["/directory/", "/collections/", "/clip/", "/schedule"]
         search.gotoWeb(link)
         search.search(keyword)
-        search.scroll()
+##        search.scroll()
         search.gotoRandomChannel(blacklist)
         search.screenshot()
         search.quit()
