@@ -1,4 +1,4 @@
-from TwitchSearcher import TwitchSearcher 
+from  TwitchSearcher import TwitchSearcher 
 import argparse
 import os
 
@@ -24,11 +24,11 @@ def parse_and_execute(file_path):
             elif cmd == "search":
                 ts.search(" ".join(args))
             elif cmd == "scroll":
-                ts.scroll()
+                ts.scroll(args)
             elif cmd == "gotoChannel":
-                ts.gotoRandomChannel(args)
+                ts.gotoRandomChannel()
             elif cmd == "gotoChannel":
-                ts.gotoRandomChannel(args)
+                ts.gotoRandomChannel()
             elif cmd == "screenshot":
                 ts.screenshot()
             elif cmd == "quit":
@@ -48,10 +48,9 @@ if __name__ == "__main__":
         search = TwitchSearcher()
         link = "https://www.twitch.tv"
         keyword = "StarCraft II"
-        blacklist = ["/directory/", "/collections/", "/clip/", "/schedule"]
         search.gotoWeb(link)
         search.search(keyword)
-##        search.scroll()
-        search.gotoRandomChannel(blacklist)
+        search.scroll(2)
+        search.gotoRandomChannel()
         search.screenshot()
         search.quit()
