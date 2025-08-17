@@ -34,11 +34,11 @@ def parse_and_execute(file_path):
             elif cmd == "quit":
                 ts.quit()
             else:
-                print(f"⚠️ 不支援的指令：{cmd}")
+                print(f"Unsupported command : {cmd}")
 
 if __name__ == "__main__":    
-    parser = argparse.ArgumentParser(description="逐一處理傳入的檔案")
-    parser.add_argument("-s", "--source", nargs="+", help="一或多個指令檔 .txt")
+    parser = argparse.ArgumentParser(description="Execute by case")
+    parser.add_argument("-s", "--source", nargs="+", help="One or more files .txt")
     args = parser.parse_args()
 
     if args.source:
